@@ -1,8 +1,9 @@
-## Interface: 50001
+## Interface: 50400
 ## Title: DruidTimerBars
 ## Notes: Druid ability and debuff tracker.
-## Author: Gilbert - Tichondrius
-## Version: 2.3.0
+## Notes-ptBR: Rastreador de habilidades e debuffs de druida.
+## Author: Gilbert - Tichondrius; Sergio Moura
+## Version: 2.3.1
 ## SavedVariables: DTBdb
 
 inc.xml
