@@ -53,7 +53,7 @@ DTB.Sunfire		= { id=93402, cdm=-1, cdms=nil, name=GetSpellInfo(93402) }
 DTB.FaerieFire		= { id=770,   cdm=-1, cdms=nil, name=GetSpellInfo(770)   }
 DTB.Rake		= { id=1822,  cdm=-1, cdms=nil, name=GetSpellInfo(1822)  }
 DTB.Lacerate		= { id=33745, cdm=-1, cdms=nil, name=GetSpellInfo(33745) }
-DTB.SavageRoar		= { id=52610, cdm=-1, cdms=nil, name=GetSpellInfo(52610) }
+DTB.SavageRoar		= { id=127538, cdm=-1, cdms=nil, name=GetSpellInfo(127538) }
 DTB.OmenOfClarity	= { id=16870, cdm=-1, cdms=nil, name=GetSpellInfo(16870) }
 DTB.SolarEclipse	= { id=48517, name=GetSpellInfo(48517) }
 DTB.LunarEclipse	= { id=48518, name=GetSpellInfo(48518) }
@@ -86,6 +86,9 @@ function DTB:OnInitialize()
     DTB:RegisterEvent("PLAYER_ALIVE")
     DTB:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
     DTB:RegisterEvent("PLAYER_TALENT_UPDATE")
+
+    -- Hello
+    print("DTB loaded.")
 end
 
 function DTB:OnProfileChanged(event, database, newProfileKey)
