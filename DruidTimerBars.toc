@@ -9,6 +9,7 @@
 inc.xml
 
 Lang\enUS.lua
+Lang\ptBR.lua
 
 Main.lua
 Options.lua
