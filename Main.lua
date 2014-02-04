@@ -51,6 +51,7 @@ DTB.Rip			= { id=1079,  cdm=-1, cdms=nil, name=GetSpellInfo(1079)  }
 DTB.Moonfire		= { id=8921,  cdm=-1, cdms=nil, name=GetSpellInfo(8921)  }
 DTB.Sunfire		= { id=93402, cdm=-1, cdms=nil, name=GetSpellInfo(93402) }
 DTB.FaerieFire		= { id=770,   cdm=-1, cdms=nil, name=GetSpellInfo(770)   }
+DTB.FaerieSwarm	= { id=102355,   cdm=-1, cdms=nil, name=GetSpellInfo(102355)   }
 DTB.Rake		= { id=1822,  cdm=-1, cdms=nil, name=GetSpellInfo(1822)  }
 DTB.Lacerate		= { id=33745, cdm=-1, cdms=nil, name=GetSpellInfo(33745) }
 DTB.SavageRoar		= { id=127538, cdm=-1, cdms=nil, name=GetSpellInfo(127538) }
@@ -58,6 +59,7 @@ DTB.OmenOfClarity	= { id=16870, cdm=-1, cdms=nil, name=GetSpellInfo(16870) }
 DTB.SolarEclipse	= { id=48517, name=GetSpellInfo(48517) }
 DTB.LunarEclipse	= { id=48518, name=GetSpellInfo(48518) }
 DTB.WeakenedBlows	= { id=115798, cdm=-1, cdms=nil }
+DTB.WeakenedArmor	= { id=113746, cdm=-1, cdms=nil }
 
 -- Startup & Initialization
 function DTB:OnInitialize()
@@ -182,7 +184,6 @@ DTB.frame:SetScript("OnUpdate", function (self, elapsed)
 			local _,_,_,_,_,duration,expires,source,_,_,id = UnitBuff("player",i)
 
 			if source == "player" then
-				-- print("UnitBuff (player) id: " .. id .. " / expires:" .. expires .. " / source: " .. source .. " / duration: " .. duration);
 				progress = ((expires - time) / duration) * 100
 				timeleft = expires - time
 
@@ -207,6 +208,9 @@ DTB.frame:SetScript("OnUpdate", function (self, elapsed)
 					DTB:UpdateBar("Berserk", DTB.Berserk.name, progress, timeleft, id)
 				elseif DTB.db.profile.TrackBarkskin and id == DTB.Barkskin.id then
 					DTB:UpdateBar("Barkskin", DTB.Barkskin.name, progress, timeleft, id)
+				--else
+				--	print("UnitBuff (player) id: " .. id .. " / expires:" .. expires .. " / source: " .. source .. " / duration: " .. duration)
+				--	print("UnitBuff -------- name: " .. GetSpellInfo(id))
 				end
 			end
 
@@ -222,29 +226,41 @@ DTB.frame:SetScript("OnUpdate", function (self, elapsed)
 			progress = ((expires - time) / duration) * 100
 			timeleft = expires - time
 
+			--print("UnitBuff (target) id: " .. id .. " / expires:" .. expires .. " / source: " .. source .. " / duration: " .. duration .. " / count: " .. count)
+			--print("UnitBuff -------- name: " .. GetSpellInfo(id))
+
 			if source == "player" then
-			if DTB.db.profile.TrackSunfire and id == DTB.Sunfire.id then
-			    DTB:UpdateBar("Sunfire",DTB.Sunfire.name,progress,timeleft,id)
-			elseif DTB.db.profile.TrackMoonfire and id == DTB.Moonfire.id then
-			    DTB:UpdateBar("Moonfire",DTB.Moonfire.name,progress,timeleft,id)
-			elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
-			    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
-			elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
-			    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
-			elseif DTB.db.profile.TrackRip and id == DTB.Rip.id then
-			    DTB:UpdateBar("Rip",DTB.Rip.name,progress,timeleft,id)
-			elseif DTB.db.profile.TrackLacerate and id == DTB.Lacerate.id then
-			    DTB:UpdateBar("Lacerate",DTB.Lacerate.name.." x "..count,progress,timeleft,id)
-			end
+				if DTB.db.profile.TrackSunfire and id == DTB.Sunfire.id then
+				    DTB:UpdateBar("Sunfire",DTB.Sunfire.name,progress,timeleft,id)
+				elseif DTB.db.profile.TrackMoonfire and id == DTB.Moonfire.id then
+				    DTB:UpdateBar("Moonfire",DTB.Moonfire.name,progress,timeleft,id)
+				elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
+				    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
+				elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
+				    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
+				elseif DTB.db.profile.TrackRip and id == DTB.Rip.id then
+				    DTB:UpdateBar("Rip",DTB.Rip.name,progress,timeleft,id)
+				elseif DTB.db.profile.TrackLacerate and id == DTB.Lacerate.id then
+				    DTB:UpdateBar("Lacerate",DTB.Lacerate.name.." x "..count,progress,timeleft,id)
+				end
 		    end
 
-		    -- Just look for FF, we don't care whos it is.
-		    if DTB.db.profile.TrackFaerieFire and id == DTB.FaerieFire.id then
-			DTB:UpdateBar("FaerieFire",DTB.FaerieFire.name.." x "..count,progress,timeleft,id)
+		    -- Just look for Faerie Fire, Faerie Swarm, Weakened Armor and WeakenedBlows, we don't care whos it is.
+		    if DTB.db.profile.TrackFaerieFire then
+		    	if id == DTB.FaerieFire.id then
+					DTB:UpdateBar("FaerieFire", DTB.FaerieFire.name, progress, timeleft, id)
+				elseif id == DTB.FaerieSwarm.id then
+					DTB:UpdateBar("FaerieFire", DTB.FaerieSwarm.name, progress, timeleft, id)
+				end
+		    end
+
+		    -- Weakened Armor
+		    if id == DTB.WeakenedArmor.id then
+		    	DTB:UpdateBar("WeakenedArmor", L["WEAKENEDARMOR"] .. " x " .. count, progress, timeleft, id)
 		    end
 
 		    if DTB.db.profile.TrackWeakenedBlows and (form == 1 or form == 3) and id == DTB.WeakenedBlows.id then
-			DTB:UpdateBar("WeakenedBlows",L["WEAKENEDBLOWS"],progress,timeleft,id)
+				DTB:UpdateBar("WeakenedBlows", L["WEAKENEDBLOWS"], progress, timeleft, id)
 		    end
 
 		    i = i + 1
@@ -443,6 +459,8 @@ function DTB:COMBAT_LOG_EVENT_UNFILTERED(_,_,event,_,sourceGUID,_,sourceFlags,_,
 			DTB:HideBar("WeakenedBlows")
 		elseif spellID == DTB.FaerieFire.id then
 			DTB:HideBar("FaerieFire")
+		elseif spellID == DTB.WeakenedArmor.id then
+			DTB:HideBar("WeakenedArmor")
 		end
 	end
 end
@@ -924,7 +942,8 @@ function DTB:ShowAllBars()
     DTB:UpdateBar("SolarBeam",DTB.SolarBeam.name,100,-1,DTB.SolarBeam.id)
     DTB:UpdateBar("Innervate",DTB.Innervate.name,100,-1,DTB.Innervate.id)
     DTB:UpdateBar("OmenOfClarity",DTB.OmenOfClarity.name,100,-1,DTB.OmenOfClarity.id)
-    DTB:UpdateBar("WeakenedBlows",L["WEAKENEDBLOWS"],100,-1,DTB.WeakenedBlows.id)
+	DTB:UpdateBar("WeakenedBlows",L["WEAKENEDBLOWS"],100,-1,DTB.WeakenedBlows.id)
+	DTB:UpdateBar("WeakenedArmor",L["WEAKENEDARMOR"],100,-1,DTB.WeakenedArmor.id)
     DTB:UpdateBar("Lacerate",DTB.Lacerate.name.." x ".."1",100,-1,DTB.Lacerate.id)
     DTB:UpdateBar("Rake",DTB.Rake.name,100,-1,DTB.Rake.id)
     DTB:UpdateBar("Rip",DTB.Rip.name,100,-1,DTB.Rip.id)

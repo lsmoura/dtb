@@ -328,6 +328,14 @@ function DTB:Options()
 				get	= function (info,value) return self.db.profile.TrackWeakenedBlows end,
 				set	= function (info,value) self.db.profile.TrackWeakenedBlows = value self:HideAllBars() end,
 			    },
+			    trackweakenedaromr	= {
+				type	= "toggle",
+				name	= L["WEAKENEDARMOR"],
+				desc	= L["D_TRACKWEAKENEDARMOR"],
+				order	= 2,
+				get	= function (info,value) return self.db.profile.TrackWeakenedArmor end,
+				set	= function (info,value) self.db.profile.TrackWeakenedArmor = value self:HideAllBars() end,
+			    },
 			    tracklacerate	= {
 				type	= "toggle",
 				name	= DTB.Lacerate.name,
@@ -395,6 +403,15 @@ function DTB:Options()
 				set	= "SetItemColor",
 				hasAlpha= true,
 			    },
+			    WeakenedArmor= {
+				type	= "color",
+				name	= L["WEAKENEDARMOR"],
+				desc	= L["WEAKENEDARMOR"] .. L["D_COLOR"],
+				order	= 2,
+				get	= "GetItemColor",
+				set	= "SetItemColor",
+				hasAlpha= true,
+			    },
 			    Lacerate	= {
 				type	= "color",
 				name	= DTB.Lacerate.name,
@@ -443,6 +460,15 @@ function DTB:Options()
 				type	= "select",
 				style	= "dropdown",
 				name	= L["WEAKENEDBLOWS"],
+				order	= 0,
+				get	= "GetBarSlot",
+				set	= "SetBarSlot",
+				values  = barslots
+			    },
+			    WeakenedArmor= {
+				type	= "select",
+				style	= "dropdown",
+				name	= L["WEAKENEDARMOR"],
 				order	= 0,
 				get	= "GetBarSlot",
 				set	= "SetBarSlot",
@@ -1064,6 +1090,7 @@ function DTB:Defaults()
 	    TrackRip		= true,
 	    TrackLacerate	= true,
 	    TrackWeakenedBlows	= true,
+	    TrackWeakenedArmor	= true,
 	    TrackSavageRoar	= true,
 	    TrackBarkskin	= true,
 	    TrackSolarBeam	= true,
@@ -1091,7 +1118,7 @@ function DTB:Defaults()
 	    xOffset		= 0,
 	    yOffset		= 0,
 	    FrameUnlocked	= true,
-	    Sorting		= { EclipsePower=0,WeakenedBlows=0,TreeofLife=0,SolarEclipse=1,LunarEclipse=1,Lacerate=1,Rake=1,NaturesSwiftness=1,
+	    Sorting		= { EclipsePower=0,WeakenedBlows=0,WeakenedArmor=0,TreeofLife=0,SolarEclipse=1,LunarEclipse=1,Lacerate=1,Rake=1,NaturesSwiftness=1,
 				    Starsurge=2,Rip=2,WildGrowth=2,Starfall=3,Berserk=3,Swiftmend=3,ForceofNature=4,
 				    SavageRoar=4,SolarBeam=5,TigersFury=5,Moonfire=6,Sunfire=7,FaerieFire=8,OmenOfClarity=9,Barkskin=10,
 				    Innervate=11,NaturesGrace=12,Tranquility=13,Rebirth=14 },
@@ -1110,6 +1137,7 @@ function DTB:Defaults()
 	    Rip			= { r=1, g=1, b=0, a=1 },
 	    Rake		= { r=1, g=0, b=0, a=1 },
 	    WeakenedBlows	= { r=1, g=.6, b=0, a=1 },
+		WeakenedArmor	= { r=1, g=.6, b=0, a=1 },
 	    Lacerate		= { r=1, g=0, b=0, a=1 },
 	    Berserk		= { r=.23, g=1, b=0, a=1 },
 	    SavageRoar		= { r=.63, g=.86, b=1, a=1 },
@@ -1184,6 +1212,7 @@ function DTB:ResetColors()
     self.db.profile.Rip			= defaults.profile.Rip
     self.db.profile.Rake		= defaults.profile.Rake
     self.db.profile.WeakenedBlows	= defaults.profile.WeakenedBlows
+    self.db.profile.WeakenedArmor	= defaults.profile.WeakenedArmor
     self.db.profile.Lacerate		= defaults.profile.Lacerate
     self.db.profile.Berserk		= defaults.profile.Berserk
     self.db.profile.SavageRoar		= defaults.profile.SavageRoar
