@@ -1,0 +1,13 @@
+## Interface: 50001
+## Title: DruidTimerBars
+## Notes: Druid ability and debuff tracker.
+## Author: Gilbert - Tichondrius
+## Version: 2.3.0
+## SavedVariables: DTBdb
+
+inc.xml
+
+Lang\enUS.lua
+
+Main.lua
+Options.lua

@@ -1,0 +1,159 @@
+-----
+Druid Timer Bars - Druid ability and debuff tracker.
+
+Contact: Gilbert - Tichondrius
+-----
+
+Version 2.3.0
+---
+
+* Updated for Patch 5.0.4.
+* Removed all tracked glyphs, as they've all been removed from the game.
+* Moonfire and Sunfire can now coexist.
+* Removed Pulverize, Thorns and Insect Swarm bars.
+* Now tracks Weakened Blows instead of Demo Shout, Demo Roar, etc.
+* Removed tracking for Mangle, Trauma, Hemorrhage, etc.
+
+Version 2.2.0
+---
+
+* Updated for Patch 4.2.
+* Changed COMBAT_LOG_EVENT_UNFILTERED to the 4.2 parameters, fixing a great many things.
+* Entering an Eclipse state now properly resets the cooldown bar of Nature's Grace.
+* Profiles! It's about time, right?
+
+Version 2.1.0
+---
+
+* Updated included libraries.
+* Now tracks which Eclipse procced last so you'll always know where to start.
+* Balance Power icon is now always visible while specced Balance.
+* Added a bar to track the duration/cooldown of Nature's Grace.
+* Eclipse Power bar is now colored properly.
+* Static bar sorting is now an option again.
+
+Version 2.0.4
+---
+
+* A new option has been added to use the Blizzard cooldown models. This gives you the
+  normal "clock" animation, and allows addons such as OmniCC to apply cooldown timers.
+  This option is considered beta, and probably won't work right in all cases. 
+* Changed the Eclipse power icons slightly. They now show which spell you should be
+  casting. IE, the Solar Eclipse icon will show when you should be casting Wrath, and
+  the Lunar Eclipse icon will show when you should cast Starfire.
+* The Eclipse Power bar no longer hides at 0% power.
+* Starfall is now only tracked when actually talented.
+* Force of Nature is no longer tracked when disabled.
+* Innervate can now be found under "Other Options".
+* Added bars for Thorns, Solar Beam and Pulverize.
+* Mangled and Demoralized bars should now hide properly when similar debuffs expire.
+* Rebirth is once again tracked properly.
+* Made a number of performance optimizations. CPU usage should be a lot lower.
+* Abilities like Starsurge and Rebirth should no longer have their bars "extended" by the GCD.
+
+Version 2.0.3
+---
+
+* Fixed a stupid bug that prevented some bars from showing.
+
+Version 2.0.2
+---
+
+* Fixed an error with the Eclipse power tooltip.
+* Sunfire is now tracked on the Moonfire bar.
+* No longer shows a duration for Eclipse procs.
+* Eclipse power has two new icons to show which Eclipse you're building towards.
+
+Version 2.0.1
+---
+
+* Fixed a bug with the Eclipse tracker's label when switching from bars to icons.
+* Removed some debugging code printing to the chat window.
+* Replaced Faerie Fire Feral/Imp Faerie Fire with the new stacking debuff.
+* Added bars for Tranquility, Tree of Life, Swiftmend, Nature's Swiftness,
+  Wild Growth, Force of Nature and Innervate.
+* The frame dimensions should scale properly now when changing height/width/spacing.
+* Reset Bars now works properly.
+* Starsurge is now tracked by default.
+* Glyph of Starsurge now updates the Starfall cooldown properly.
+* Scarlet Fever and Demoralizing Roar (Pet) are now counted for Demoralized.
+* Stampede and Hemorrhage are now counted for Mangled.
+* The Blizzard Eclipse Frame and Eclipse Energy bar no longer show if you're not Balance.
+* Tooltips will now use the proper debuff tooltip instead of the spell tooltip.
+
+Version 2.0.0
+---
+
+* Updated all spell IDs.
+* Removed obsolete spell ID "uprank" code.
+* Added a cooldown tracker for Starsurge.
+* Cleaned up the Options a bit.
+* Resetting colors will now keep the frame visible while unlocked.
+* Removed Eclipse cooldown tracking.
+* Removed the ability to reorder the bars.
+* Removed Static bar sorting.
+* Fixed default font and texture settings.
+* A bunch of small bugfixes and performance tweaks, too numerous to recall.
+
+Version 1.2.1
+---
+
+* Added an Omen Of Clarity bar.
+
+Version 1.2.0
+---
+
+* Bars and icons will now show the tooltips for their spells.
+* Trying to drag the frame while locked no longer causes an error.
+* Added a new option to control how bars/icons grow. Options are: Center, Bottom/Left, and Top/Right.
+* When unlocked, the frame will always be black with 50% transparency. Lock the frame to use your own color.
+* The frame color now defaults to 100% transparency.
+* Test Bars, Frame Color, Text Color and Movable Frame have been moved to the Look and Feel category of the
+  options panel.
+* Spell and ability names are now obtained from the game, so non English localizations have been removed.
+* Fixed a bug with duration timers for Faerie Fire, Mangled and Demoralized cast by other people.
+* Icon timer text now rounds up (ie, 4m 59s shows as 5m instead of 4m)
+* Now checks for lower ranks of spells and abilities, so sub-80 players can join in the fun.
+* Duration timers will no longer go into negative values.
+* Version number is now displayed on the options panel.
+
+Version 1.1.0
+---
+
+* Added a throttle to OnUpdate, which will lower CPU usage significantly.
+* Icon Only mode: With this enabled, only spell and ability icons will be displayed, no bars.
+  Counters and cooldowns will be overlaid on the icons, which can be displayed in a row or a column.
+* Added an option to track Starfall's duration and cooldown. The Starfall bar will
+  show in red when you're over 20 yards away from your target while using Glyph of Focus.
+* Added an option to change the text color.
+* The Moonfire bar will now show the number of extensions to Moonfire's duration from Glyph of Starfire.
+* The Rip bar will now show the number of extensions to Rip's duration from Glyph of Shred.
+* Cleaned up a number of functions for the options panel.
+* Cooldown bars will no longer show for disabled abilities. -- Reported by Friikki
+* Demo Screech will now properly cause the Demoralized bar to appear.
+* Timer text now has a drop shadow as well.
+* Fixed a bug where font settings weren't applying properly.
+
+Version 1.0.2
+---
+
+* Removed UNIT_AURA code now that the combat log properly tracks Eclipse procs.
+* Font sizes are now rounded to the nearest whole number.
+* Added an option to change the bar spacing. -- Suggested by nanovivid
+* Faerie Fire will now always show in preference of Faerie Fire Feral. -- Suggested by nanovivid
+* Added a drop shadow to the bar text -- Suggested by nanovivid
+* Added an option to track Barkskin's duration and cooldown.
+* Added an option to change the bar sorting order.
+* Reorganized the options panel.
+
+Version 1.0.1
+---
+
+* Mangle will now show in Cat or Bear Form if Trauma is on the target. Bar text changed to "Mangled!"
+* Mangle will now show regardless of who applied the debuff.
+* Fixed a bug with some bars not appearing or disappearing properly.
+
+Version 1.0.0
+---
+
+Initial release.
