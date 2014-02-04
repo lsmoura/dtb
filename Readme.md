@@ -1,26 +1,27 @@
------
+Druid Timer Bars
+================
+
 Druid Timer Bars - Druid ability and debuff tracker.
 
-Contact: Gilbert - Tichondrius
------
+Authors
+-------
+* Gilbert - Tichondrius
+* Sergio Moura
 
----
 Contents
----
+--------
 
 1. Commands
 2. Description
 3. FAQ
 
----
 1. Commands
----
+-----------
 
 Just one. You can access the options panel by typing /dtb.
 
----
 2. Description
----
+--------------
 
 This addon will give you a series of timer bars for important self buffs and
 debuffs. These include:
@@ -69,9 +70,8 @@ debuffs. These include:
 
 You can turn each of these bars off individually in the options panel.
 
----
 3. FAQ
----
+-------
 
 Q: Some bars aren't disappearing when they run out.
 A: Due to a bug, the combat log occasionally stops working, which stops the addon from
