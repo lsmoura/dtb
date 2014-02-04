@@ -89,16 +89,17 @@ function DTB:OnInitialize()
 end
 
 function DTB:OnProfileChanged(event, database, newProfileKey)
-print ("profile changed")
+	print ("profile changed")
     self:HideAllBars()
-DTB:SetBarWidth(nil,self.db.profile.BarWidth)
-DTB:SetBarHeight(nil,self.db.profile.BarHeight)
-DTB:SetBarSpacing(nil,self.db.profile.BarSpacing)
-DTB:SetBarTexture(nil,self.db.profile.BarTexture)
-DTB:SetBarFont(nil,self.db.profile.BarFont)
-DTB:ToggleIconOnly(nil,self.db.profile.IconOnly)
-DTB:ToggleIconRow(nil,self.db.profile.IconRow)
-DTB:ToggleHideIcons(nil,self.db.profile.HideIcons)
+
+	DTB:SetBarWidth(nil, self.db.profile.BarWidth)
+	DTB:SetBarHeight(nil, self.db.profile.BarHeight)
+	DTB:SetBarSpacing(nil, self.db.profile.BarSpacing)
+	DTB:SetBarTexture(nil, self.db.profile.BarTexture)
+	DTBdb:SetBarFont(nil, self.db.profile.BarFont)
+	DTB:ToggleIconOnly(nil, self.db.profile.IconOnly)
+	DTB:ToggleIconRow(nil, self.db.profile.IconRow)
+	DTB:ToggleHideIcons(nil, self.db.profile.HideIcons)
 
 end
 
@@ -980,32 +981,32 @@ function DTB:HideAllBars()
 end
 
 -- Check the progress of the bar and update or hide it as needed.
-function DTB:CheckBarProgress(name,time,gcd,activated,cd)
+function DTB:CheckBarProgress(name, time, gcd, activated, cd)
     local tmp
 
     if activated then
-	local start,duration = GetSpellCooldown(DTB[name].id)
-	tmp = start + duration - time
+		local start,duration = GetSpellCooldown(DTB[name].id)
+		tmp = start + duration - time
     else
-	tmp = DTB[name].cdend - time
+		tmp = DTB[name].cdend - time
     end
 
     if tmp > gcd then
-	if cd then
-	    DTB[name].oncd = 1
-	end
+		if cd then
+		    DTB[name].oncd = 1
+		end
 
-	progress = (tmp / DTB[name].cd) * 100
-	DTB:UpdateBar(name,DTB[name].name.." "..L["COOLDOWN"],progress,tmp,DTB[name].id)
+		progress = (tmp / DTB[name].cd) * 100
+		DTB:UpdateBar(name, DTB[name].name.." "..L["COOLDOWN"], progress, tmp, DTB[name].id)
     else
-	if cd and DTB[name].oncd then
-	    DTB[name].oncd = nil
-	    DTB[name].used = nil
-	else
-	    DTB[name].cdend = nil
-	end
+		if cd and DTB[name].oncd then
+	    	DTB[name].oncd = nil
+	    	DTB[name].used = nil
+		else
+	    	DTB[name].cdend = nil
+		end
 
-	DTB:HideBar(name)
+		DTB:HideBar(name)
     end
 end
 
@@ -1017,14 +1018,14 @@ function DTB:ScanTalents()
     local _,_,_,_,starfall = GetTalentInfo(1,18,false)
 
     if starfall == 1 then
-	DTB.Starfall.talented = true
+		DTB.Starfall.talented = true
     end
 end
 
 -- Check if the player is Balance.
 function DTB:IsBalance()
     if GetSpecialization() == 1 then
-	return true
+		return true
     end
 
     return false
@@ -1036,7 +1037,7 @@ end
 function DTB:CheckStarfallRange()
     local inrange
 
-    inrange = IsSpellInRange(DTB.Moonfire.name,"target")
+    inrange = IsSpellInRange(DTB.Moonfire.name, "target")
 
     return inrange
 end
@@ -1049,11 +1050,11 @@ function DTB:GetEclipsePower()
 	local power = UnitPower("player",8)
 
 	if power > 0 then
-	    DTB:UpdateBar("EclipsePower",L["SOLAR_POWER"]..power.."%",power,nil,DTB.SolarEclipse.id)
+	    DTB:UpdateBar("EclipsePower", L["SOLAR_POWER"]..power.."%", power, nil, DTB.SolarEclipse.id)
 	elseif power < 0 then
-	    DTB:UpdateBar("EclipsePower",L["LUNAR_POWER"]..power-(power*2).."%",power-(power*2),nil,DTB.LunarEclipse.id)
+	    DTB:UpdateBar("EclipsePower", L["LUNAR_POWER"]..power-(power*2).."%",power-(power*2),nil,DTB.LunarEclipse.id)
 	else
-	    DTB:UpdateBar("EclipsePower",L["SOLAR_POWER"]..power.."%",power,nil,DTB.SolarEclipse.id)
+	    DTB:UpdateBar("EclipsePower", L["SOLAR_POWER"]..power.."%",power,nil,DTB.SolarEclipse.id)
 	end
 
 	-- Track which Eclipse we procced last, also reset the CD on Nature's Grace.
@@ -1095,21 +1096,21 @@ end
 function DTB:Duration(value)
     -- Hide negative values.
     if value < 0 then
-	return nil
+		return nil
     end
 
     -- For icons, space is at a premium, so we'll lose the precision.
     if DTB.db.profile.IconOnly then
-	if value >= 60 then
-	    return ("%dm"):format(ceil(value/60))
-	end
+		if value >= 60 then
+		    return ("%dm"):format(ceil(value/60))
+		end
 
-	return ("%d"):format(floor(value))
+		return ("%d"):format(floor(value))
     else
-	if value >= 60 then
-	    return ("%dm %1.1fs"):format((value/60),(value%60))
-	end
+		if value >= 60 then
+		    return ("%dm %1.1fs"):format((value/60),(value%60))
+		end
 
-	return ("%1.1fs"):format(value)
+		return ("%1.1fs"):format(value)
     end
 end

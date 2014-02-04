@@ -4,6 +4,10 @@ Druid Timer Bars - Druid ability and debuff tracker.
 Contact: Gilbert - Tichondrius
 -----
 
+Version 2.3.1
+---
+* Updated for Patch 5.4.
+
 Version 2.3.0
 ---
 
