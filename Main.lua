@@ -255,7 +255,7 @@ DTB.frame:SetScript("OnUpdate", function (self, elapsed)
 		    end
 
 		    -- Weakened Armor
-		    if id == DTB.WeakenedArmor.id then
+		    if DTB.db.profile.TrackWeakenedArmor and id == DTB.WeakenedArmor.id then
 		    	DTB:UpdateBar("WeakenedArmor", L["WEAKENEDARMOR"] .. " x " .. count, progress, timeleft, id)
 		    end
 
