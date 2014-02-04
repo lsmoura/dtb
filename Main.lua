@@ -108,33 +108,33 @@ function DTB:MakeFrame()
     DTB.frame:SetFrameStrata("BACKGROUND")
 
     if DTB.db.profile.IconOnly then
-	if DTB.db.profile.IconRow then
-	    DTB.frame:SetWidth(((DTB.db.profile.BarHeight + DTB.db.profile.BarSpacing) * 16) + DTB.db.profile.BarSpacing)
-	    DTB.frame:SetHeight(DTB.db.profile.BarHeight + (DTB.db.profile.BarSpacing * 2))
-	else
-	    DTB.frame:SetWidth(DTB.db.profile.BarHeight + (DTB.db.profile.BarSpacing * 2))
-	    DTB.frame:SetHeight(((DTB.db.profile.BarHeight + DTB.db.profile.BarSpacing) * 16) + DTB.db.profile.BarSpacing)
-	end
-    else
-	-- If we're not showing icons, don't widen the frame to accomodate them.
-	if DTB.db.profile.HideIcons then
-	    DTB.frame:SetWidth((DTB.db.profile.BarWidth + (DTB.db.profile.BarSpacing * 2)))
-	else
-	    -- Width of the bar, plus width of the icon, plus padding
-	    DTB.frame:SetWidth((DTB.db.profile.BarWidth + DTB.db.profile.BarHeight + (DTB.db.profile.BarSpacing * 2)))
-	end
+		if DTB.db.profile.IconRow then
+		    DTB.frame:SetWidth(((DTB.db.profile.BarHeight + DTB.db.profile.BarSpacing) * 16) + DTB.db.profile.BarSpacing)
+		    DTB.frame:SetHeight(DTB.db.profile.BarHeight + (DTB.db.profile.BarSpacing * 2))
+		else
+		    DTB.frame:SetWidth(DTB.db.profile.BarHeight + (DTB.db.profile.BarSpacing * 2))
+		    DTB.frame:SetHeight(((DTB.db.profile.BarHeight + DTB.db.profile.BarSpacing) * 16) + DTB.db.profile.BarSpacing)
+		end
+	    else
+		-- If we're not showing icons, don't widen the frame to accomodate them.
+		if DTB.db.profile.HideIcons then
+		    DTB.frame:SetWidth((DTB.db.profile.BarWidth + (DTB.db.profile.BarSpacing * 2)))
+		else
+		    -- Width of the bar, plus width of the icon, plus padding
+		    DTB.frame:SetWidth((DTB.db.profile.BarWidth + DTB.db.profile.BarHeight + (DTB.db.profile.BarSpacing * 2)))
+		end
 
-	-- 16 bar slots
-	DTB.frame:SetHeight(((DTB.db.profile.BarHeight + DTB.db.profile.BarSpacing) * 16) + (DTB.db.profile.BarSpacing + 2))
+		-- 16 bar slots
+		DTB.frame:SetHeight(((DTB.db.profile.BarHeight + DTB.db.profile.BarSpacing) * 16) + (DTB.db.profile.BarSpacing + 2))
     end
 
     DTB.frame:SetBackdrop({ bgFile = "Interface/Tooltips/UI-Tooltip-Background" })
 
     -- Make the frame 50% black if unlocked.
     if self.db.profile.FrameUnlocked then
-	DTB.frame:SetBackdropColor(0,0,0,.5)
+		DTB.frame:SetBackdropColor(0,0,0,.5)
     else
-	DTB.frame:SetBackdropColor(DTB.db.profile.FrameColor.r, DTB.db.profile.FrameColor.g, DTB.db.profile.FrameColor.b, DTB.db.profile.FrameColor.a)
+		DTB.frame:SetBackdropColor(DTB.db.profile.FrameColor.r, DTB.db.profile.FrameColor.g, DTB.db.profile.FrameColor.b, DTB.db.profile.FrameColor.a)
     end
 
     DTB.frame:RegisterForDrag("LeftButton")
@@ -176,49 +176,49 @@ DTB.frame:SetScript("OnUpdate", function (self, elapsed)
 
 	-- Scan our buffs for Eclipse, Savage Roar, etc.
 	while UnitBuff("player",i) do
-	    local _,_,_,_,_,duration,expires,source,_,_,id = UnitBuff("player",i)
+		local _,_,_,_,_,duration,expires,source,_,_,id = UnitBuff("player",i)
 
-	    if source == "player" then
-		progress = ((expires - time) / duration) * 100
-		timeleft = expires - time
+		if source == "player" then
+			progress = ((expires - time) / duration) * 100
+			timeleft = expires - time
 
-		if DTB.db.profile.TrackEclipse and id == DTB.SolarEclipse.id then
-		    DTB:UpdateBar("SolarEclipse",DTB.SolarEclipse.name,100,-1,id)
-		elseif DTB.db.profile.TrackEclipse and id == DTB.LunarEclipse.id then
-		    DTB:UpdateBar("LunarEclipse",DTB.LunarEclipse.name,100,-1,id)
-		elseif DTB.db.profile.TrackStarfall and id == DTB.Starfall.id then
-		    if not DTB.Starfall.active then
-			DTB.Starfall.active = GetTime()
-		    end
-		    DTB:UpdateBar("Starfall",DTB.Starfall.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackSavageRoar and id == DTB.SavageRoar.id then
-		    DTB:UpdateBar("SavageRoar",DTB.SavageRoar.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackOmenOfClarity and id == DTB.OmenOfClarity.id then
-		    DTB:UpdateBar("OmenOfClarity",DTB.OmenOfClarity.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackTigersFury and id == DTB.TigersFury.id then
-		    DTB:UpdateBar("TigersFury",DTB.TigersFury.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackNaturesGrace and id == DTB.NaturesGrace.id then
-		    DTB:UpdateBar("NaturesGrace",DTB.NaturesGrace.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackBerserk and id == DTB.Berserk.id then
-		    DTB:UpdateBar("Berserk",DTB.Berserk.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackBarkskin and id == DTB.Barkskin.id then
-		    DTB:UpdateBar("Barkskin",DTB.Barkskin.name,progress,timeleft,id)
+			if DTB.db.profile.TrackEclipse and id == DTB.SolarEclipse.id then
+				DTB:UpdateBar("SolarEclipse", DTB.SolarEclipse.name, 100, -1, id)
+			elseif DTB.db.profile.TrackEclipse and id == DTB.LunarEclipse.id then
+				DTB:UpdateBar("LunarEclipse", DTB.LunarEclipse.name, 100, -1, id)
+			elseif DTB.db.profile.TrackStarfall and id == DTB.Starfall.id then
+				if not DTB.Starfall.active then
+					DTB.Starfall.active = GetTime()
+				end
+				DTB:UpdateBar("Starfall", DTB.Starfall.name, progress, timeleft, id)
+			elseif DTB.db.profile.TrackSavageRoar and id == DTB.SavageRoar.id then
+				DTB:UpdateBar("SavageRoar", DTB.SavageRoar.name, progress, timeleft, id)
+			elseif DTB.db.profile.TrackOmenOfClarity and id == DTB.OmenOfClarity.id then
+				DTB:UpdateBar("OmenOfClarity", DTB.OmenOfClarity.name, progress, timeleft, id)
+			elseif DTB.db.profile.TrackTigersFury and id == DTB.TigersFury.id then
+				DTB:UpdateBar("TigersFury", DTB.TigersFury.name, progress, timeleft, id)
+			elseif DTB.db.profile.TrackNaturesGrace and id == DTB.NaturesGrace.id then
+				DTB:UpdateBar("NaturesGrace", DTB.NaturesGrace.name, progress, timeleft, id)
+			elseif DTB.db.profile.TrackBerserk and id == DTB.Berserk.id then
+				DTB:UpdateBar("Berserk", DTB.Berserk.name, progress, timeleft, id)
+			elseif DTB.db.profile.TrackBarkskin and id == DTB.Barkskin.id then
+				DTB:UpdateBar("Barkskin", DTB.Barkskin.name, progress, timeleft, id)
+			end
 		end
-	    end
 
-	    i = i + 1
+		i = i + 1
 	end
 
 	i = 1
 
 	-- Scan all the debuffs on the current target for ones we care about that belong to us.
 	while UnitDebuff("target",i) do
-	    local _,_,_,count,_,duration,expires,source,_,_,id = UnitDebuff("target",i)
+		local _,_,_,count,_,duration,expires,source,_,_,id = UnitDebuff("target",i)
 
-	    progress = ((expires - time) / duration) * 100
-	    timeleft = expires - time
+		progress = ((expires - time) / duration) * 100
+		timeleft = expires - time
 
-	    if source == "player" then
+		if source == "player" then
 		if DTB.db.profile.TrackSunfire and id == DTB.Sunfire.id then
 		    DTB:UpdateBar("Sunfire",DTB.Sunfire.name,progress,timeleft,id)
 		elseif DTB.db.profile.TrackMoonfire and id == DTB.Moonfire.id then
