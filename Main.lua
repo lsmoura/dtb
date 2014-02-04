@@ -167,118 +167,119 @@ DTB.frame:SetScript("OnUpdate", function (self, elapsed)
     if lastupdate > .05 then
     	lastupdate = 0
 
-	-- For config: If testbars is on, we want to redraw them so people can see
-	-- color changes and such in realtime.
-	if DTB.testbars then
-	    DTB:ShowAllBars()
-	end
+		-- For config: If testbars is on, we want to redraw them so people can see
+		-- color changes and such in realtime.
+		if DTB.testbars then
+		    DTB:ShowAllBars()
+		end
 
-	if DTB.db.profile.TrackEclipsePower and isBalance then
-	    DTB:GetEclipsePower()
-	end
+		if DTB.db.profile.TrackEclipsePower and isBalance then
+		    DTB:GetEclipsePower()
+		end
 
-	-- Scan our buffs for Eclipse, Savage Roar, etc.
-	while UnitBuff("player",i) do
-		local _,_,_,_,_,duration,expires,source,_,_,id = UnitBuff("player",i)
+		-- Scan our buffs for Eclipse, Savage Roar, etc.
+		while UnitBuff("player",i) do
+			local _,_,_,_,_,duration,expires,source,_,_,id = UnitBuff("player",i)
 
-		if source == "player" then
+			if source == "player" then
+				-- print("UnitBuff (player) id: " .. id .. " / expires:" .. expires .. " / source: " .. source .. " / duration: " .. duration);
+				progress = ((expires - time) / duration) * 100
+				timeleft = expires - time
+
+				if DTB.db.profile.TrackEclipse and id == DTB.SolarEclipse.id then
+					DTB:UpdateBar("SolarEclipse", DTB.SolarEclipse.name, 100, -1, id)
+				elseif DTB.db.profile.TrackEclipse and id == DTB.LunarEclipse.id then
+					DTB:UpdateBar("LunarEclipse", DTB.LunarEclipse.name, 100, -1, id)
+				elseif DTB.db.profile.TrackStarfall and id == DTB.Starfall.id then
+					if not DTB.Starfall.active then
+						DTB.Starfall.active = GetTime()
+					end
+					DTB:UpdateBar("Starfall", DTB.Starfall.name, progress, timeleft, id)
+				elseif DTB.db.profile.TrackSavageRoar and id == DTB.SavageRoar.id then
+					DTB:UpdateBar("SavageRoar", DTB.SavageRoar.name, progress, timeleft, id)
+				elseif DTB.db.profile.TrackOmenOfClarity and id == DTB.OmenOfClarity.id then
+					DTB:UpdateBar("OmenOfClarity", DTB.OmenOfClarity.name, progress, timeleft, id)
+				elseif DTB.db.profile.TrackTigersFury and id == DTB.TigersFury.id then
+					DTB:UpdateBar("TigersFury", DTB.TigersFury.name, progress, timeleft, id)
+				elseif DTB.db.profile.TrackNaturesGrace and id == DTB.NaturesGrace.id then
+					DTB:UpdateBar("NaturesGrace", DTB.NaturesGrace.name, progress, timeleft, id)
+				elseif DTB.db.profile.TrackBerserk and id == DTB.Berserk.id then
+					DTB:UpdateBar("Berserk", DTB.Berserk.name, progress, timeleft, id)
+				elseif DTB.db.profile.TrackBarkskin and id == DTB.Barkskin.id then
+					DTB:UpdateBar("Barkskin", DTB.Barkskin.name, progress, timeleft, id)
+				end
+			end
+
+			i = i + 1
+		end
+
+		i = 1
+
+		-- Scan all the debuffs on the current target for ones we care about that belong to us.
+		while UnitDebuff("target",i) do
+			local _,_,_,count,_,duration,expires,source,_,_,id = UnitDebuff("target",i)
+
 			progress = ((expires - time) / duration) * 100
 			timeleft = expires - time
 
-			if DTB.db.profile.TrackEclipse and id == DTB.SolarEclipse.id then
-				DTB:UpdateBar("SolarEclipse", DTB.SolarEclipse.name, 100, -1, id)
-			elseif DTB.db.profile.TrackEclipse and id == DTB.LunarEclipse.id then
-				DTB:UpdateBar("LunarEclipse", DTB.LunarEclipse.name, 100, -1, id)
-			elseif DTB.db.profile.TrackStarfall and id == DTB.Starfall.id then
-				if not DTB.Starfall.active then
-					DTB.Starfall.active = GetTime()
-				end
-				DTB:UpdateBar("Starfall", DTB.Starfall.name, progress, timeleft, id)
-			elseif DTB.db.profile.TrackSavageRoar and id == DTB.SavageRoar.id then
-				DTB:UpdateBar("SavageRoar", DTB.SavageRoar.name, progress, timeleft, id)
-			elseif DTB.db.profile.TrackOmenOfClarity and id == DTB.OmenOfClarity.id then
-				DTB:UpdateBar("OmenOfClarity", DTB.OmenOfClarity.name, progress, timeleft, id)
-			elseif DTB.db.profile.TrackTigersFury and id == DTB.TigersFury.id then
-				DTB:UpdateBar("TigersFury", DTB.TigersFury.name, progress, timeleft, id)
-			elseif DTB.db.profile.TrackNaturesGrace and id == DTB.NaturesGrace.id then
-				DTB:UpdateBar("NaturesGrace", DTB.NaturesGrace.name, progress, timeleft, id)
-			elseif DTB.db.profile.TrackBerserk and id == DTB.Berserk.id then
-				DTB:UpdateBar("Berserk", DTB.Berserk.name, progress, timeleft, id)
-			elseif DTB.db.profile.TrackBarkskin and id == DTB.Barkskin.id then
-				DTB:UpdateBar("Barkskin", DTB.Barkskin.name, progress, timeleft, id)
+			if source == "player" then
+			if DTB.db.profile.TrackSunfire and id == DTB.Sunfire.id then
+			    DTB:UpdateBar("Sunfire",DTB.Sunfire.name,progress,timeleft,id)
+			elseif DTB.db.profile.TrackMoonfire and id == DTB.Moonfire.id then
+			    DTB:UpdateBar("Moonfire",DTB.Moonfire.name,progress,timeleft,id)
+			elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
+			    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
+			elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
+			    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
+			elseif DTB.db.profile.TrackRip and id == DTB.Rip.id then
+			    DTB:UpdateBar("Rip",DTB.Rip.name,progress,timeleft,id)
+			elseif DTB.db.profile.TrackLacerate and id == DTB.Lacerate.id then
+			    DTB:UpdateBar("Lacerate",DTB.Lacerate.name.." x "..count,progress,timeleft,id)
 			end
+		    end
+
+		    -- Just look for FF, we don't care whos it is.
+		    if DTB.db.profile.TrackFaerieFire and id == DTB.FaerieFire.id then
+			DTB:UpdateBar("FaerieFire",DTB.FaerieFire.name.." x "..count,progress,timeleft,id)
+		    end
+
+		    if DTB.db.profile.TrackWeakenedBlows and (form == 1 or form == 3) and id == DTB.WeakenedBlows.id then
+			DTB:UpdateBar("WeakenedBlows",L["WEAKENEDBLOWS"],progress,timeleft,id)
+		    end
+
+		    i = i + 1
 		end
 
-		i = i + 1
-	end
+		-- For these abilities, we want to show a cooldown bar when the buff fades.
+		if DTB.Starfall.cdend then DTB:CheckBarProgress("Starfall",time,0,0,nil) end
+		if DTB.TigersFury.cdend then DTB:CheckBarProgress("TigersFury",time,0,0,nil) end
+		if DTB.NaturesGrace.cdend then DTB:CheckBarProgress("NaturesGrace",time,0,nil,nil) end
+		if DTB.Berserk.cdend then DTB:CheckBarProgress("Berserk",time,0,0,nil) end
+		if DTB.Barkskin.cdend then DTB:CheckBarProgress("Barkskin",time,0,0,nil) end
 
-	i = 1
+		-- These abilities don't apply any buffs or debuffs we can track, so we have to check their cooldowns instead.
+		if DTB.db.profile.TrackRebirth and DTB.Rebirth.used then DTB:CheckBarProgress("Rebirth",time,gcd,1,1) end
+		if DTB.db.profile.TrackStarsurge and DTB.Starsurge.used then DTB:CheckBarProgress("Starsurge",time,gcd,1,1) end
+		if DTB.db.profile.TrackForceofNature and DTB.ForceofNature.used then DTB:CheckBarProgress("ForceofNature",time,gcd,1,1) end
+		if DTB.db.profile.TrackSolarBeam and DTB.SolarBeam.used then DTB:CheckBarProgress("SolarBeam",time,gcd,1,1) end
+		if DTB.db.profile.TrackWildGrowth and DTB.WildGrowth.used then DTB:CheckBarProgress("WildGrowth",time,gcd,1,1) end
+		if DTB.db.profile.TrackNaturesSwiftness and DTB.NaturesSwiftness.used then DTB:CheckBarProgress("NaturesSwiftness",time,gcd,1,1) end
+		if DTB.db.profile.TrackSwiftmend and DTB.Swiftmend.used then DTB:CheckBarProgress("Swiftmend",time,gcd,1,1) end
+		if DTB.db.profile.TrackTranquility and DTB.Tranquility.used then DTB:CheckBarProgress("Tranquility",time,gcd,1,1) end
+		if DTB.db.profile.TrackTreeofLife and DTB.TreeofLife.used then DTB:CheckBarProgress("TreeofLife",time,gcd,1,1) end
+		if DTB.db.profile.TrackInnervate and DTB.Innervate.used then DTB:CheckBarProgress("Innervate",time,gcd,1,1) end
 
-	-- Scan all the debuffs on the current target for ones we care about that belong to us.
-	while UnitDebuff("target",i) do
-		local _,_,_,count,_,duration,expires,source,_,_,id = UnitDebuff("target",i)
-
-		progress = ((expires - time) / duration) * 100
-		timeleft = expires - time
-
-		if source == "player" then
-		if DTB.db.profile.TrackSunfire and id == DTB.Sunfire.id then
-		    DTB:UpdateBar("Sunfire",DTB.Sunfire.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackMoonfire and id == DTB.Moonfire.id then
-		    DTB:UpdateBar("Moonfire",DTB.Moonfire.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
-		    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackRake and id == DTB.Rake.id then
-		    DTB:UpdateBar("Rake",DTB.Rake.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackRip and id == DTB.Rip.id then
-		    DTB:UpdateBar("Rip",DTB.Rip.name,progress,timeleft,id)
-		elseif DTB.db.profile.TrackLacerate and id == DTB.Lacerate.id then
-		    DTB:UpdateBar("Lacerate",DTB.Lacerate.name.." x "..count,progress,timeleft,id)
+		-- If we're tracking Starfall's range, we'll use it's bar when its not active.
+		if DTB.Starfall.talented and DTB.db.profile.TrackStarfallRange and not DTB.Starfall.active and not DTB.Starfall.cdend
+		   and UnitCanAttack("player","target") and form ~= 1 and form ~= 3 then
+		    DTB:UpdateBar("Starfall",DTB.Starfall.name.." "..L["RANGE"],100,-1,DTB.Starfall.id)
 		end
-	    end
 
-	    -- Just look for FF, we don't care whos it is.
-	    if DTB.db.profile.TrackFaerieFire and id == DTB.FaerieFire.id then
-		DTB:UpdateBar("FaerieFire",DTB.FaerieFire.name.." x "..count,progress,timeleft,id)
-	    end
-
-	    if DTB.db.profile.TrackWeakenedBlows and (form == 1 or form == 3) and id == DTB.WeakenedBlows.id then
-		DTB:UpdateBar("WeakenedBlows",L["WEAKENEDBLOWS"],progress,timeleft,id)
-	    end
-
-	    i = i + 1
+		-- Re-order the bars
+		if DTB.resort then
+			DTB:SortBars()
+		end
 	end
-
-	-- For these abilities, we want to show a cooldown bar when the buff fades.
-	if DTB.Starfall.cdend then DTB:CheckBarProgress("Starfall",time,0,0,nil) end
-	if DTB.TigersFury.cdend then DTB:CheckBarProgress("TigersFury",time,0,0,nil) end
-	if DTB.NaturesGrace.cdend then DTB:CheckBarProgress("NaturesGrace",time,0,nil,nil) end
-	if DTB.Berserk.cdend then DTB:CheckBarProgress("Berserk",time,0,0,nil) end
-	if DTB.Barkskin.cdend then DTB:CheckBarProgress("Barkskin",time,0,0,nil) end
-
-	-- These abilities don't apply any buffs or debuffs we can track, so we have to check their cooldowns instead.
-	if DTB.db.profile.TrackRebirth and DTB.Rebirth.used then DTB:CheckBarProgress("Rebirth",time,gcd,1,1) end
-	if DTB.db.profile.TrackStarsurge and DTB.Starsurge.used then DTB:CheckBarProgress("Starsurge",time,gcd,1,1) end
-	if DTB.db.profile.TrackForceofNature and DTB.ForceofNature.used then DTB:CheckBarProgress("ForceofNature",time,gcd,1,1) end
-	if DTB.db.profile.TrackSolarBeam and DTB.SolarBeam.used then DTB:CheckBarProgress("SolarBeam",time,gcd,1,1) end
-	if DTB.db.profile.TrackWildGrowth and DTB.WildGrowth.used then DTB:CheckBarProgress("WildGrowth",time,gcd,1,1) end
-	if DTB.db.profile.TrackNaturesSwiftness and DTB.NaturesSwiftness.used then DTB:CheckBarProgress("NaturesSwiftness",time,gcd,1,1) end
-	if DTB.db.profile.TrackSwiftmend and DTB.Swiftmend.used then DTB:CheckBarProgress("Swiftmend",time,gcd,1,1) end
-	if DTB.db.profile.TrackTranquility and DTB.Tranquility.used then DTB:CheckBarProgress("Tranquility",time,gcd,1,1) end
-	if DTB.db.profile.TrackTreeofLife and DTB.TreeofLife.used then DTB:CheckBarProgress("TreeofLife",time,gcd,1,1) end
-	if DTB.db.profile.TrackInnervate and DTB.Innervate.used then DTB:CheckBarProgress("Innervate",time,gcd,1,1) end
-
-	-- If we're tracking Starfall's range, we'll use it's bar when its not active.
-	if DTB.Starfall.talented and DTB.db.profile.TrackStarfallRange and not DTB.Starfall.active and not DTB.Starfall.cdend
-	   and UnitCanAttack("player","target") and form ~= 1 and form ~= 3 then
-	    DTB:UpdateBar("Starfall",DTB.Starfall.name.." "..L["RANGE"],100,-1,DTB.Starfall.id)
-	end
-
-	-- Re-order the bars
-	if DTB.resort then
-	    DTB:SortBars()
-	end
-    end
 end)
 
 -- Hide all bars on a target change.
@@ -305,7 +306,7 @@ function DTB:PLAYER_ENTERING_WORLD()
     -- We use Discombobulator Ray to check our distance from the target for Starfall.
     -- We need to make sure it's cached in our client before this check will work.
     if not GetItemInfo(4388) then
-	GameTooltip:SetHyperlink("item:4388")
+		GameTooltip:SetHyperlink("item:4388")
     end
 
     -- Create each bar here. This way, they're in the array in the order we want them
@@ -331,119 +332,119 @@ end
 
 -- Talent changes, check some stuff.
 function DTB:PLAYER_TALENT_UPDATE()
-    local _,_,_,_,starfall = GetTalentInfo(1,20,false)
+	local _,_,_,_,starfall = GetTalentInfo(1,20,false)
 
-    -- Check for Starfall, so we can hide the bar for people who aren't Balance at the moment.
-    if starfall == 1 then
-	DTB.Starfall.talented = true
-    else
-	DTB.Starfall.talented = nil
-    end
+	-- Check for Starfall, so we can hide the bar for people who aren't Balance at the moment.
+	if starfall == 1 then
+		DTB.Starfall.talented = true
+	else
+		DTB.Starfall.talented = nil
+	end
 
-    isBalance = DTB:IsBalance()
+	isBalance = DTB:IsBalance()
 
-    DTB:HideAllBars()
+	DTB:HideAllBars()
 end
 
 -- Combat Log handler. We watch here for buffs/debuffs fading from us or our target.
 function DTB:COMBAT_LOG_EVENT_UNFILTERED(_,_,event,_,sourceGUID,_,sourceFlags,_,_,destName,destFlags,_,spellID,...)
-    -- Watch for our buffs and debuffs expiring.
-    if sourceGUID == playerGUID and event == "SPELL_AURA_REMOVED" then
-	-- Self buffs
-	if destName == playerName then
-	    if DTB.db.profile.TrackEclipse and spellID == DTB.SolarEclipse.id then
-		DTB:HideBar("SolarEclipse")
-	    elseif DTB.db.profile.TrackEclipse and spellID == DTB.LunarEclipse.id then
-		DTB:HideBar("LunarEclipse")
-	    elseif DTB.db.profile.TrackStarfall and spellID == DTB.Starfall.id then
-		DTB.Starfall.cdend = GetTime() + DTB.Starfall.cd
+	-- Watch for our buffs and debuffs expiring.
+	if sourceGUID == playerGUID and event == "SPELL_AURA_REMOVED" then
+		-- Self buffs
+		if destName == playerName then
+			if DTB.db.profile.TrackEclipse and spellID == DTB.SolarEclipse.id then
+				DTB:HideBar("SolarEclipse")
+			elseif DTB.db.profile.TrackEclipse and spellID == DTB.LunarEclipse.id then
+				DTB:HideBar("LunarEclipse")
+			elseif DTB.db.profile.TrackStarfall and spellID == DTB.Starfall.id then
+				DTB.Starfall.cdend = GetTime() + DTB.Starfall.cd
 
-		-- If Starsurge was cast while Starfall was active, it reduced the cooldown of Starfall.
-		-- Because of how we track cooldowns, we need to apply these reductions now.
-		if DTB.Starfall.surges then
-		    DTB.Starfall.cdend = DTB.Starfall.cdend - (DTB.Starfall.surges * 5)
-		    DTB.Starfall.surges = 0
-		    DTB.Starfall.cdm = -1
-		    DTB.Starfall.cdms = nil
+				-- If Starsurge was cast while Starfall was active, it reduced the cooldown of Starfall.
+				-- Because of how we track cooldowns, we need to apply these reductions now.
+				if DTB.Starfall.surges then
+					DTB.Starfall.cdend = DTB.Starfall.cdend - (DTB.Starfall.surges * 5)
+					DTB.Starfall.surges = 0
+					DTB.Starfall.cdm = -1
+					DTB.Starfall.cdms = nil
+				end
+
+				DTB.Starfall.active = nil
+			elseif spellID == DTB.SavageRoar.id then
+				DTB:HideBar("SavageRoar")
+			elseif spellID == DTB.OmenOfClarity.id then
+				DTB:HideBar("OmenOfClarity")
+			elseif DTB.db.profile.TrackTigersFury and spellID == DTB.TigersFury.id then
+				DTB.TigersFury.cdend = GetTime() + DTB.TigersFury.cd
+			elseif DTB.db.profile.TrackNaturesGrace and spellID == DTB.NaturesGrace.id then
+				DTB.NaturesGrace.cdend = GetTime() + DTB.NaturesGrace.cd
+			elseif DTB.db.profile.TrackBerserk and spellID == DTB.Berserk.id then
+				DTB.Berserk.cdend = GetTime() + DTB.Berserk.cd
+			elseif DTB.db.profile.TrackBarkskin and spellID == DTB.Barkskin.id then
+				DTB.Barkskin.cdend = GetTime() + DTB.Barkskin.cd
+			end
 		end
 
-		DTB.Starfall.active = nil
-	    elseif spellID == DTB.SavageRoar.id then
-		DTB:HideBar("SavageRoar")
-	    elseif spellID == DTB.OmenOfClarity.id then
-		DTB:HideBar("OmenOfClarity")
-	    elseif DTB.db.profile.TrackTigersFury and spellID == DTB.TigersFury.id then
-		DTB.TigersFury.cdend = GetTime() + DTB.TigersFury.cd
-	    elseif DTB.db.profile.TrackNaturesGrace and spellID == DTB.NaturesGrace.id then
-		DTB.NaturesGrace.cdend = GetTime() + DTB.NaturesGrace.cd
-	    elseif DTB.db.profile.TrackBerserk and spellID == DTB.Berserk.id then
-		DTB.Berserk.cdend = GetTime() + DTB.Berserk.cd
-	    elseif DTB.db.profile.TrackBarkskin and spellID == DTB.Barkskin.id then
-		DTB.Barkskin.cdend = GetTime() + DTB.Barkskin.cd
-	    end
+		-- Debuffs on our target
+		if destName == playerTarget then
+			if spellID == DTB.Moonfire.id then
+				DTB:HideBar("Moonfire")
+			elseif spellID == DTB.Sunfire.id then
+				DTB:HideBar("Sunfire")
+			elseif spellID == DTB.Rake.id then
+				DTB:HideBar("Rake")
+			elseif spellID == DTB.Rip.id then
+				DTB:HideBar("Rip")
+			elseif spellID == DTB.Lacerate.id then
+				DTB:HideBar("Lacerate")
+			end
+		end
 	end
 
-	-- Debuffs on our target
-	if destName == playerTarget then
-	    if spellID == DTB.Moonfire.id then
-		DTB:HideBar("Moonfire")
-	    elseif spellID == DTB.Sunfire.id then
-		DTB:HideBar("Sunfire")
-	    elseif spellID == DTB.Rake.id then
-		DTB:HideBar("Rake")
-	    elseif spellID == DTB.Rip.id then
-		DTB:HideBar("Rip")
-	    elseif spellID == DTB.Lacerate.id then
-		DTB:HideBar("Lacerate")
-	    end
-	end
-    end
+	-- Spells we want to track the cooldown of after casting
+	if sourceGUID == playerGUID then
+		if spellID == DTB.Starsurge.id then
+			if event == "SPELL_MISS" or event == "SPELL_DAMAGE" then
+				DTB.Starsurge.used = 1
+			end
+		end
 
-    -- Spells we want to track the cooldown of after casting
-    if sourceGUID == playerGUID then
-	if spellID == DTB.Starsurge.id then
-	    if event == "SPELL_MISS" or event == "SPELL_DAMAGE" then
-		DTB.Starsurge.used = 1
-	    end
-	end
+		if event == "SPELL_CAST_SUCCESS" then
+			if spellID == DTB.WildGrowth.id then
+				DTB.WildGrowth.used = 1
+			elseif spellID == DTB.NaturesSwiftness.id then
+				DTB.NaturesSwiftness.used = 1
+			elseif spellID == DTB.Swiftmend.id then
+				DTB.Swiftmend.used = 1
+			elseif spellID == DTB.Rebirth.id then
+				DTB.Rebirth.used = 1
+			elseif spellID == DTB.Tranquility.id then
+				DTB.Tranquility.used = 1
+			elseif spellID == DTB.TreeofLife.id then
+				DTB.TreeofLife.used = 1
+			elseif spellID == DTB.ForceofNature.id then
+				DTB.ForceofNature.used = 1
+			elseif spellID == DTB.SolarBeam.id then
+				DTB.SolarBeam.used = 1
+			elseif spellID == DTB.Innervate.id then
+				DTB.Innervate.used = 1
+			end
+		end
 
-	if event == "SPELL_CAST_SUCCESS" then
-	    if spellID == DTB.WildGrowth.id then
-		DTB.WildGrowth.used = 1
-	    elseif spellID == DTB.NaturesSwiftness.id then
-		DTB.NaturesSwiftness.used = 1
-	    elseif spellID == DTB.Swiftmend.id then
-		DTB.Swiftmend.used = 1
-	    elseif spellID == DTB.Rebirth.id then
-		DTB.Rebirth.used = 1
-	    elseif spellID == DTB.Tranquility.id then
-		DTB.Tranquility.used = 1
-	    elseif spellID == DTB.TreeofLife.id then
-		DTB.TreeofLife.used = 1
-	    elseif spellID == DTB.ForceofNature.id then
-		DTB.ForceofNature.used = 1
-	    elseif spellID == DTB.SolarBeam.id then
-		DTB.SolarBeam.used = 1
-	    elseif spellID == DTB.Innervate.id then
-		DTB.Innervate.used = 1
-	    end
+		if event == "SPELL_RESURRECT" then
+			if spellID == DTB.Rebirth.id then
+				DTB.Rebirth.used = 1
+			end
+		end
 	end
 
-	if event == "SPELL_RESURRECT" then
-	    if spellID == DTB.Rebirth.id then
-		DTB.Rebirth.used = 1
-	    end
+	-- We track these debuffs regardless of who applied them.
+	if destName == playerTarget and event == "SPELL_AURA_REMOVED" then
+		if spellID == DTB.WeakenedBlows.id then
+			DTB:HideBar("WeakenedBlows")
+		elseif spellID == DTB.FaerieFire.id then
+			DTB:HideBar("FaerieFire")
+		end
 	end
-    end
-
-    -- We track these debuffs regardless of who applied them.
-    if destName == playerTarget and event == "SPELL_AURA_REMOVED" then
-	if spellID == DTB.WeakenedBlows.id then
-	    DTB:HideBar("WeakenedBlows")
-	elseif spellID == DTB.FaerieFire.id then
-	    DTB:HideBar("FaerieFire")
-	end
-    end
 end
 
 -- Mouseover, create a tooltip
